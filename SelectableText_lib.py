@@ -19,37 +19,51 @@ class SelectableText_lib:
         self._TextDictonary[self.TextCount] = (text, functionname)
     
     def setShownText(self, textindices : list):
+        self.SelectableText : list = []
         self.WriteThisText = textindices
-        if (self.WriteThisText.count() == 0):
+        if self.WriteThisText.__len__() == 0:
             self.WriteThisText = [0]
         for key in self.WriteThisText:
             if (self._TextDictonary[key][1] != self.voidfunct):
                 self.SelectableText.append(key)
     
     def displayText(self):
-        self.SelectedText = min(max(self.SelectedText, self.WriteThisText[0]), self.WriteThisText[self.WriteThisText.count()-1])
+        self.SelectedText = min(max(self.SelectedText, list(self.WriteThisText)[0]), list(self.WriteThisText)[list(self.WriteThisText).__len__() -1])
         os.system('cls')
         for TextKey in self.WriteThisText:
             if TextKey == self.SelectedText:
-                pass
+                self.writeSelectedText(self._TextDictonary[TextKey][0])
             else:
-                print(self._TextDictonary[TextKey][0])
+                self.writeText(self._TextDictonary[TextKey][0])
         Input : int = detection.detect_up_down()
         
         match Input:
             case -1:
                 self.SelectedText -= 1
-                while self.SelectableText.__contains__(self.SelectedText) == False:
-                    self.SelectedText -= 1
+                if self.SelectedText < self.SelectableText[0]:
+                    self.SelectedText = self.SelectableText[self.SelectableText.__len__() -1]
             case 1:
                 self.SelectedText += 1
-                while self.SelectableText.__contains__(self.SelectedText) == False:
-                    self.SelectedText += 1
+                if self.SelectedText > self.SelectableText[self.SelectableText.__len__() -1]:
+                    self.SelectedText = self.SelectableText[0]
             case 0:
                 if (self._TextDictonary[self.SelectedText][1] != self.voidfunct):
+                    os.system('cls')
                     self._TextDictonary[self.SelectedText][1]()
     
     def writeText(self, Text : str):
+        SplitText : list = list(Text)
+        PrintThisText : str = ""
+        for c in SplitText:
+            if c == "[":
+                pass
+            elif c == "]":
+                pass
+            else:
+                PrintThisText += c
+        print(PrintThisText)
+    
+    def writeSelectedText(self, Text : str):
         SplitText : list = list(Text)
         PrintThisText : str = ""
         for c in SplitText:
