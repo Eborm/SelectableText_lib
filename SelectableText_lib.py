@@ -24,7 +24,7 @@ class SelectableText_lib:
         if self.WriteThisText.__len__() == 0:
             self.WriteThisText = [0]
         for key in self.WriteThisText:
-            if (self._TextDictonary[key][1] != self.voidfunct):
+            if (self._TextDictonary[key][1] == self.voidfunct) == False:
                 self.SelectableText.append(key)
     
     def displayText(self):
@@ -39,13 +39,13 @@ class SelectableText_lib:
         
         match Input:
             case -1:
-                self.SelectedText -= 1
-                if self.SelectedText < self.SelectableText[0]:
-                    self.SelectedText = self.SelectableText[self.SelectableText.__len__() -1]
-            case 1:
                 self.SelectedText += 1
                 if self.SelectedText > self.SelectableText[self.SelectableText.__len__() -1]:
                     self.SelectedText = self.SelectableText[0]
+            case 1:
+                self.SelectedText -= 1
+                if self.SelectedText < self.SelectableText[0]:
+                    self.SelectedText = self.SelectableText[self.SelectableText.__len__() -1]
             case 0:
                 if (self._TextDictonary[self.SelectedText][1] != self.voidfunct):
                     os.system('cls')

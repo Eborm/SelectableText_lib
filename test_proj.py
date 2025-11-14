@@ -9,12 +9,17 @@ def testFunc():
 def testFunc2():
     print("Test function 2")
     input()
+
+def testFunc3():
+    print("Test function 3")
+    input()
     
 st.addText("run this [func1]", testFunc)
 st.addText("run this [func2]", testFunc2)
-st.addText("", st.voidfunct)
+st.addText("run this [func3]", testFunc3)
+st.addText("")
 
-st.setShownText([0, 2, 1])
+st.setShownText([0, 1, 2, 3])
 
 while True:
     st.displayText()
