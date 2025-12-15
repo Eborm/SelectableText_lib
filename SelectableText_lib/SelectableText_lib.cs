@@ -124,6 +124,7 @@ namespace SelectableText_lib_namespace
 
         public void set_shown_text(List<int> textindices)
         {
+            selectable_text = new List<int> {};
             write_this_text = textindices;
             if (write_this_text.Count == 0) { write_this_text.Add(0); }
             foreach ( int key in write_this_text)
@@ -137,6 +138,7 @@ namespace SelectableText_lib_namespace
 
         public void set_shown_text(List<string> textkeys)
         {
+            selectable_text = new List<int> {};
             foreach (string key in textkeys)
             {
                 if (_TextKeyDictonary.ContainsKey(key))
@@ -171,21 +173,15 @@ namespace SelectableText_lib_namespace
             }
             int input = _detection.detect_up_down();
 
-            switch (input)
+                        switch (input)
             {
                 case -1:
-                    selectedtext--;
-                    if (selectable_text.Contains(selectedtext) == false)
-                    {
-                        selectedtext = selectable_text[selectable_text.Count - 1];
-                    }
+                    try { selectedtext = selectable_text[selectable_text.FindIndex(a => a == selectedtext) - 1]; }
+                    catch{ selectedtext = selectable_text[selectable_text.Count - 1];}
                     break;
                 case 1:
-                    selectedtext++;
-                    if (selectable_text.Contains(selectedtext) == false)
-                    {
-                        selectedtext = selectable_text[0];
-                    }
+                    try { selectedtext = selectable_text[selectable_text.FindIndex(a => a == selectedtext) + 1]; }
+                    catch { selectedtext = selectable_text[0]; }
                     break;
                 case 2:
                     if (_TextDictonary[selectedtext].Item2 != _TextDictonary[0].Item2)
