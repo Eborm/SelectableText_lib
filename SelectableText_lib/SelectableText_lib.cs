@@ -173,16 +173,24 @@ namespace SelectableText_lib_namespace
             }
             int input = _detection.detect_up_down();
 
-                        switch (input)
+            switch (input)
             {
                 case -1:
                     try { selectedtext = selectable_text[selectable_text.FindIndex(a => a == selectedtext) - 1]; }
-                    catch{ selectedtext = selectable_text[selectable_text.Count - 1];}
+                    catch
+                    {
+                        try { selectedtext = selectable_text[selectable_text.Count - 1]; }
+                        catch { }
+                    }
                     break;
                 case 1:
                     try { selectedtext = selectable_text[selectable_text.FindIndex(a => a == selectedtext) + 1]; }
-                    catch { selectedtext = selectable_text[0]; }
+                    catch { 
+                        try { selectedtext = selectable_text[0]; }
+                        catch { }
+                    }
                     break;
+                        }
                 case 2:
                     if (_TextDictonary[selectedtext].Item2 != _TextDictonary[0].Item2)
                     {
@@ -192,7 +200,6 @@ namespace SelectableText_lib_namespace
                 default:
                     break;
             }
-
         }
 
         public void write_text(string text)
