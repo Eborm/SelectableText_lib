@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelectableText_lib.Classes
+namespace SelectableText_lib_namespace.Classes
 {
     internal class Detection
     {

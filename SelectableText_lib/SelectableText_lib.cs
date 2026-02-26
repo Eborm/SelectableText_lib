@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
 using static System.Net.Mime.MediaTypeNames;
-using SelectableText_lib.Classes;
+using SelectableText_lib_namespace.Classes;
 
 namespace SelectableText_lib_namespace
 {
