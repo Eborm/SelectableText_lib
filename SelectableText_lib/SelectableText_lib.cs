@@ -91,7 +91,7 @@ namespace SelectableText_lib_namespace
     
         public void add_text(string text)
         {
-            Action functionname = null;
+            Action? functionname;
             if (functionname == null) functionname = voidfunct();
             textcount++;
             _TextDictonary.Add(textcount, new Tuple<string, Action>(text, functionname));
@@ -115,7 +115,7 @@ namespace SelectableText_lib_namespace
 
         public void add_text(string keyword, string text)
         {
-            Action functionname = null;
+            Action? functionname;
             if (functionname == null) functionname = voidfunct();
             textcount++;
             _TextKeyDictonary.Add(keyword, textcount);
