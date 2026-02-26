@@ -1,4 +1,5 @@
 ﻿using SelectableText_lib_namespace;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace test_proj
 {
@@ -6,7 +7,54 @@ namespace test_proj
     {
         static void Main(string[] args)
         {
-            SelectableText_lib st = new SelectableText_lib(false ,ConsoleColor.Black, ConsoleColor.White);
+            int? choice = null;
+            while (choice == null)
+            {
+                Console.Clear();
+                Console.WriteLine("1. Simple menu");
+                Console.WriteLine("2. Keyword menu");
+                Console.WriteLine("3. Exit");
+                string input = Console.ReadLine();
+                if (input == "1")
+                {
+                    choice = 1;
+                }
+                else if (input == "2")
+                {
+                    choice = 2;
+                }
+                else if (input == "3")
+                {
+                    choice = 3;
+                }
+            }
+            if (choice == 1)
+            {
+                SimpleMenu();
+            }
+            else if (choice == 2)
+            {
+                KeyWordMenu();
+            }
+        }
+
+        static void KeyWordMenu()
+        {
+                SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White);
+                st.add_text("test", "Test [yes]", myfunction);
+                st.add_text("test2", "Test 2 [no]", myfunction2);
+                st.add_text("sometext", "some text");
+                st.add_text("sometext2","some text2");
+                st.set_shown_text(new List<string> {"test", "empty", "test2", "empty", "sometext", "sometext2"});
+                while (true)
+                {
+                    st.display_text();
+            }
+        }
+
+        static void SimpleMenu()
+        {
+            SelectableText_lib st = new SelectableText_lib(true ,ConsoleColor.Black, ConsoleColor.White);
             st.add_text("test", "Test [yes]", myfunction);
             st.add_text("test2", "Test 2 [no]", myfunction2);
             st.add_text("some text");

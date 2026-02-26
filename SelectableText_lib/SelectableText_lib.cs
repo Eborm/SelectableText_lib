@@ -143,10 +143,14 @@ namespace SelectableText_lib_namespace
                 {
                     write_this_text.Add(_TextKeyDictonary[key]);
                 }
+                else
+                {
+                    //Add in error handeling for missing keys
+                }
             }
             foreach (int key in write_this_text)
             {
-                if (_TextDictonary[key] != null)
+                if (_TextDictonary[key].Item2 != voidfunct())
                 {
                     selectable_text.Add(key);
                 }
