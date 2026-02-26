@@ -42,18 +42,18 @@ namespace SelectableText_lib_namespace
         private List<char> bstlibtext = startup.ToList();
 
         //setting up the text functions
-        private static Action voidfunct() { return () => { }; }
-        private Dictionary<int, Tuple<string, Action>> _TextDictonary = new Dictionary<int, Tuple<string, Action>> {};
-        private Dictionary<string, int> _TextKeyDictonary = new Dictionary<string, int> { { "empty", 0 } };
-        private int selectedtext = -1;
-        private int textcount = -1;
-        private List<int> write_this_text = new List<int> {0};
-        private List<int> selectable_text = new List<int> {};
+        private static Action VoidFunct() { return () => { }; }
+        private Dictionary<int, Tuple<string, Action>> textDictonary = new Dictionary<int, Tuple<string, Action>> {};
+        private Dictionary<string, int> textKeyDictonary = new Dictionary<string, int> { { "empty", 0 } };
+        private int selectedText = -1;
+        private int textCount = -1;
+        private List<int> writeThisText = new List<int> {0};
+        private List<int> selectableText = new List<int> {};
 
 
         public SelectableText_lib(System.ConsoleColor BackgroundColor = ConsoleColor.Black, System.ConsoleColor ForegroundColor = ConsoleColor.White)
         {
-            this.add_text("");
+            this.AddText("");
             this.BackgroundColor = BackgroundColor;
             this.ForegroundColor = ForegroundColor;
             Console.BackgroundColor = BackgroundColor;
@@ -65,13 +65,13 @@ namespace SelectableText_lib_namespace
                 _sb.NOP(x);
             }
             _sb.NOP(0.5);
-            _TextDictonary[0] = new Tuple<string, Action> ("", voidfunct());
+            textDictonary[0] = new Tuple<string, Action> ("", VoidFunct());
             Console.Clear();
         }
 
         public SelectableText_lib(bool disable_startup_animation, System.ConsoleColor BackgroundColor = ConsoleColor.Black, System.ConsoleColor ForegroundColor = ConsoleColor.White)
         {
-            this.add_text("");
+            this.AddText("");
             this.BackgroundColor = BackgroundColor;
             this.ForegroundColor = ForegroundColor;
             Console.BackgroundColor = BackgroundColor;
@@ -86,119 +86,118 @@ namespace SelectableText_lib_namespace
                 _sb.NOP(0.5);
                 Console.Clear();
             }
-            _TextDictonary[0] = new Tuple<string, Action>("", voidfunct());
+            textDictonary[0] = new Tuple<string, Action>("", VoidFunct());
         }
     
-        public void add_text(string text)
+        public void AddText(string text)
         {
-            Action? functionname = null;
-            if (functionname == null) functionname = voidfunct();
-            textcount++;
-            _TextDictonary.Add(textcount, new Tuple<string, Action>(text, functionname));
+            Action? functionName = null;
+            if (functionName == null) functionName = VoidFunct();
+            textCount++;
+            textDictonary.Add(textCount, new Tuple<string, Action>(text, functionName));
         }
         
-        public void add_text(string text, Action functionname)
+        public void AddText(string text, Action functionName)
         {
-            if (functionname == null) functionname = voidfunct();
-            textcount++;
-            _TextDictonary.Add(textcount, new Tuple<string, Action>(text, functionname));
+            if (functionName == null) functionName = VoidFunct();
+            textCount++;
+            textDictonary.Add(textCount, new Tuple<string, Action>(text, functionName));
         }
 
 
-        public void add_text(string keyword, string text, Action functionname)
+        public void AddText(string keyword, string text, Action functionName)
         {
-            if (functionname == null) functionname = voidfunct();
-            textcount++;
-            _TextKeyDictonary.Add(keyword, textcount);
-            _TextDictonary.Add(textcount, new Tuple<string, Action>(text, functionname));
+            if (functionName == null) functionName = VoidFunct();
+            textCount++;
+            textKeyDictonary.Add(keyword, textCount);
+            textDictonary.Add(textCount, new Tuple<string, Action>(text, functionName));
         }
 
-        public void add_text(string keyword, string text)
+        public void AddText(string keyword, string text)
         {
-            Action? functionname = null;
-            if (functionname == null) functionname = voidfunct();
-            textcount++;
-            _TextKeyDictonary.Add(keyword, textcount);
-            _TextDictonary.Add(textcount, new Tuple<string, Action>(text, functionname));
+            Action? functionName = null;
+            if (functionName == null) functionName = VoidFunct();
+            textCount++;
+            textKeyDictonary.Add(keyword, textCount);
+            textDictonary.Add(textCount, new Tuple<string, Action>(text, functionName));
         }
 
-        public void set_shown_text(List<int> textindices)
+        public void SetShownText(List<int> selectedText)
         {
-            selectable_text = new List<int> {};
-            write_this_text = textindices;
-            if (write_this_text.Count == 0) { write_this_text.Add(0); }
-            foreach ( int key in write_this_text)
+            selectableText = new List<int> {};
+            writeThisText = selectedText;
+            if (writeThisText.Count == 0) { writeThisText.Add(0); }
+            foreach ( int key in writeThisText)
             {
-                if (_TextDictonary[key].Item2 != voidfunct())
+                if (textDictonary[key].Item2 != VoidFunct())
                 {
-                    selectable_text.Add(key);
+                    selectableText.Add(key);
                 }
             }
         }
 
-        public void set_shown_text(List<string> textkeys)
+        public void SetShownText(List<string> textkeys)
         {
-            selectable_text = new List<int> {};
+            selectableText = new List<int> {};
             foreach (string key in textkeys)
             {
-                if (_TextKeyDictonary.ContainsKey(key))
+                if (textKeyDictonary.ContainsKey(key))
                 {
-                    write_this_text.Add(_TextKeyDictonary[key]);
+                    writeThisText.Add(textKeyDictonary[key]);
                 }
                 else
                 {
                     //Add in error handeling for missing keys
                 }
             }
-            foreach (int key in write_this_text)
+            foreach (int key in writeThisText)
             {
-                if (_TextDictonary[key].Item2 != voidfunct())
+                if (textDictonary[key].Item2 != VoidFunct())
                 {
-                    selectable_text.Add(key);
+                    selectableText.Add(key);
                 }
             }
-            if (write_this_text.Count == 0) { write_this_text.Add(0); }
+            if (writeThisText.Count == 0) { writeThisText.Add(0); }
         }
 
-        public void display_text()
+        public void DisplayText()
         {
-            selectedtext = Math.Clamp(selectedtext, write_this_text[0], write_this_text[write_this_text.Count - 1]);
+            selectedText = Math.Clamp(selectedText, writeThisText[0], writeThisText[writeThisText.Count - 1]);
             Console.Clear();
-            foreach (int text_key in write_this_text)
+            foreach (int text_key in writeThisText)
             {
-                if (text_key == selectedtext)
+                if (text_key == selectedText)
                 {
-                    write_selected_text(_TextDictonary[text_key].Item1);
+                    WriteSelectedText(textDictonary[text_key].Item1);
                 }
                 else
                 {
-                    write_text(_TextDictonary[text_key].Item1);
+                    WriteText(textDictonary[text_key].Item1);
                 }
             }
-            int input = _detection.detect_up_down();
+            int input = _detection.DetectUpDown();
 
             switch (input)
             {
                 case -1:
-                    try { selectedtext = selectable_text[selectable_text.FindIndex(a => a == selectedtext) - 1]; }
+                    try { selectedText = selectableText[selectableText.FindIndex(a => a == selectedText) - 1]; }
                     catch
                     {
-                        try { selectedtext = selectable_text[selectable_text.Count - 1]; }
+                        try { selectedText = selectableText[selectableText.Count - 1]; }
                         catch { }
                     }
                     break;
                 case 1:
-                    try { selectedtext = selectable_text[selectable_text.FindIndex(a => a == selectedtext) + 1]; }
+                    try { selectedText = selectableText[selectableText.FindIndex(a => a == selectedText) + 1]; }
                     catch { 
-                        try { selectedtext = selectable_text[0]; }
+                        try { selectedText = selectableText[0]; }
                         catch { }
                     }
                     break;
-                        }
                 case 2:
-                    if (_TextDictonary[selectedtext].Item2 != _TextDictonary[0].Item2)
+                    if (textDictonary[selectedText].Item2 != textDictonary[0].Item2)
                     {
-                        _TextDictonary[selectedtext].Item2?.Invoke();
+                        textDictonary[selectedText].Item2?.Invoke();
                     }
                     break;
                 default:
@@ -206,10 +205,10 @@ namespace SelectableText_lib_namespace
             }
         }
 
-        public void write_text(string text)
+        public void WriteText(string text)
         {
-            List<char> splittext = text.ToList();
-            foreach (char c in splittext)
+            List<char> splitText = text.ToList();
+            foreach (char c in splitText)
             {
                 if (c == '[')
                 {
@@ -221,12 +220,12 @@ namespace SelectableText_lib_namespace
             Console.WriteLine();
         }
 
-        public void write_selected_text(string text)
+        public void WriteSelectedText(string text)
         {
-            List<char> splittext = text.ToList();
-            if (string.Join("", splittext).Contains("["))
+            List<char> splitText = text.ToList();
+            if (string.Join("", splitText).Contains("["))
             {
-                foreach (char c in splittext)
+                foreach (char c in splitText)
                 {
                     if (c == '[')
                     {

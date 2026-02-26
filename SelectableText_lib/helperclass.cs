@@ -9,7 +9,7 @@ namespace SelectableText_lib_namespace
 {
     internal class Detection
     {
-        public int detect_up_down()
+        public int DetectUpDown()
         {
             int direction = 0;
             var key = Console.ReadKey(false).Key;
@@ -33,7 +33,7 @@ namespace SelectableText_lib_namespace
             return direction;
         }
 
-        public int advanced_detection()
+        public int AdvancedDetection()
         {
             int direction = 0;
             var key = Console.ReadKey(false).Key;

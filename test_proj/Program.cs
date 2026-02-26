@@ -14,7 +14,7 @@ namespace test_proj
                 Console.WriteLine("1. Simple menu");
                 Console.WriteLine("2. Keyword menu");
                 Console.WriteLine("3. Exit");
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 if (input == "1")
                 {
                     choice = 1;
@@ -43,15 +43,15 @@ namespace test_proj
             SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White); //First variable is used to chose if you want the intro animation
             //Second variable is the background color of the text when it is not selected, third variable is the text color of the text
             //These will be inverted when the text is selected, so the background color will become the text color and the text color will become the background color
-            st.add_text("test", "Test [yes]", myfunction) //Bracketed text is the text that will be highlighted when the user has that row selected
-            st.add_text("test2", "Test 2 [no]", myfunction2); //Bracketed text is the text that will be highlighted when the user has that row selected
-            st.add_text("sometext", "some text"); //This is just text that will be displayed but not selectable as it has no function tied to it
-            st.add_text("sometext2","some text2"); //This is just text that will be displayed but not selectable as it has no function tied to it
-            st.set_shown_text(new List<string> {"test", "empty", "test2", "empty", "sometext", "sometext2"}); //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
+            st.AddText("test", "Test [yes]", myfunction); //Bracketed text is the text that will be highlighted when the user has that row selected
+            st.AddText("test2", "Test 2 [no]", myfunction2); //Bracketed text is the text that will be highlighted when the user has that row selected
+            st.AddText("sometext", "some text"); //This is just text that will be displayed but not selectable as it has no function tied to it
+            st.AddText("sometext2","some text2"); //This is just text that will be displayed but not selectable as it has no function tied to it
+            st.SetShownText(new List<string> {"test", "empty", "test2", "empty", "sometext", "sometext2"}); //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
             //empty simply displays a nothing as this is a empty string preadded into the dictionary
             while (true)
             {
-                st.display_text(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
+                st.DisplayText(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
             }
         }
 
@@ -59,15 +59,15 @@ namespace test_proj
         {
             SelectableText_lib st = new SelectableText_lib(true ,ConsoleColor.Black, ConsoleColor.White); //First variable is used to chose if you want the intro animation
             //Second variable is the background color of the text when it is not selected, third variable is the text color of the text
-            st.add_text("test", "Test [yes]", myfunction); //Bracketed text is the text that will be highlighted when the user has that row selected
-            st.add_text("test2", "Test 2 [no]", myfunction2); //Bracketed text is the text that will be highlighted when the user has that row selected
-            st.add_text("some text"); //This is just text that will be displayed but not selectable as it has no function tied to it
-            st.add_text("some text2"); //This is just text that will be displayed but not selectable as it has no function tied to it
-            st.set_shown_text(new List<int> {1, 0 ,2, 0, 3, 4});  //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
+            st.AddText("test", "Test [yes]", myfunction); //Bracketed text is the text that will be highlighted when the user has that row selected
+            st.AddText("test2", "Test 2 [no]", myfunction2); //Bracketed text is the text that will be highlighted when the user has that row selected
+            st.AddText("some text"); //This is just text that will be displayed but not selectable as it has no function tied to it
+            st.AddText("some text2"); //This is just text that will be displayed but not selectable as it has no function tied to it
+            st.SetShownText(new List<int> {1, 0 ,2, 0, 3, 4});  //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
             //0 simply displays a nothing as this is a empty string preadded into the dictionary
             while (true)
             {
-                st.display_text(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
+                st.DisplayText(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
             }
 
         }
