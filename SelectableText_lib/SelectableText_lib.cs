@@ -11,8 +11,8 @@ namespace SelectableText_lib_namespace
         private System.ConsoleColor ForegroundColor;
 
         //setting up detection and sleepingbeauty classes
-        private detection _detection = new detection();
-        private sleepingbeauty _sb = new sleepingbeauty();
+        private Detection _detection = new Detection();
+        private ShortTimeOut _sb = new ShortTimeOut();
         private double x = 0.002;
 
         //startup animation

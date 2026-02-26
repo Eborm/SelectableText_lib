@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SelectableText_lib_namespace
 {
-    internal class detection
+    internal class Detection
     {
         public int detect_up_down()
         {
@@ -66,7 +66,7 @@ namespace SelectableText_lib_namespace
         }
     }
 
-    internal class sleepingbeauty
+    internal class ShortTimeOut
     {
         public void NOP(double durationSeconds)
         {
