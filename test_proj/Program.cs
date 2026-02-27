@@ -1,5 +1,6 @@
 ﻿using SelectableText_lib_namespace;
 using static System.Net.Mime.MediaTypeNames;
+using SelectableText_lib_namespace.Classes;
 
 namespace test_proj
 {
