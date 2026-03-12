@@ -148,8 +148,15 @@ namespace SelectableText_lib_namespace
                     {
                         temp.Add(selection.Key);
                     }
-
-                    selectableText.Add(key, temp);
+                    if (selectableText.ContainsKey(key))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        selectableText.Add(key, temp);
+                    }
+                    //selectableText.Add(key, temp);
                 }
             }
             writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
@@ -180,8 +187,15 @@ namespace SelectableText_lib_namespace
                     {
                         temp.Add(selection.Key);
                     }
-
-                    selectableText.Add(key, temp);
+                    if (selectableText.ContainsKey(key))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        selectableText.Add(key, temp);
+                    }
+                    //selectableText.Add(key, temp);
                 }
             }
             if (writeThisText.Count == 0) { writeThisText.Add(0); }
