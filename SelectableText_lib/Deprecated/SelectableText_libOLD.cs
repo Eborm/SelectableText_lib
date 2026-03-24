@@ -3,13 +3,13 @@ using System.Security.Cryptography.X509Certificates;
 using static System.Net.Mime.MediaTypeNames;
 using SelectableText_lib_namespace.Classes;
 
-namespace SelectableText_lib_namespace
+namespace SelectableText_lib_namespace.Deprecated
 {
     public class SelectableText_libOLD
     {
         //console colors
-        private System.ConsoleColor BackgroundColor;
-        private System.ConsoleColor ForegroundColor;
+        private ConsoleColor BackgroundColor;
+        private ConsoleColor ForegroundColor;
 
         //setting up Detection and ShortTimeOut classes
         private Detection _detection = new Detection();
@@ -52,9 +52,9 @@ namespace SelectableText_lib_namespace
         private List<int> selectableText = new List<int> {};
 
 
-        public SelectableText_libOLD(System.ConsoleColor BackgroundColor = ConsoleColor.Black, System.ConsoleColor ForegroundColor = ConsoleColor.White)
+        public SelectableText_libOLD(ConsoleColor BackgroundColor = ConsoleColor.Black, ConsoleColor ForegroundColor = ConsoleColor.White)
         {
-            this.AddText("");
+            AddText("");
             this.BackgroundColor = BackgroundColor;
             this.ForegroundColor = ForegroundColor;
             Console.BackgroundColor = BackgroundColor;
@@ -70,9 +70,9 @@ namespace SelectableText_lib_namespace
             Console.Clear();
         }
 
-        public SelectableText_libOLD(bool disable_startup_animation, System.ConsoleColor BackgroundColor = ConsoleColor.Black, System.ConsoleColor ForegroundColor = ConsoleColor.White)
+        public SelectableText_libOLD(bool disable_startup_animation, ConsoleColor BackgroundColor = ConsoleColor.Black, ConsoleColor ForegroundColor = ConsoleColor.White)
         {
-            this.AddText("");
+            AddText("");
             this.BackgroundColor = BackgroundColor;
             this.ForegroundColor = ForegroundColor;
             Console.BackgroundColor = BackgroundColor;

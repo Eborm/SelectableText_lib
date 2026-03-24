@@ -121,7 +121,7 @@ namespace SelectableText_lib_namespace.Classes
 
         public DateTime DateTimePicker(DateTime startDate, DateTime endDate)
         {
-            SelectableText_libOLD st = new SelectableText_libOLD(true);
+            SelectableText_lib st = new SelectableText_lib(true);
             //Throw error if start date is after end date as this is not valid input
             if (startDate > endDate)
             {
