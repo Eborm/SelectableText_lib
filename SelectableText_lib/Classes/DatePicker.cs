@@ -118,5 +118,28 @@ namespace SelectableText_lib_namespace.Classes
             }
             return stringBuilder.ToString();
         }
+
+        public DateTime DateTimePicker(DateTime startDate, DateTime endDate)
+        {
+            SelectableText_libOLD st = new SelectableText_libOLD(true);
+            //Throw error if start date is after end date as this is not valid input
+            if (startDate > endDate)
+            {
+                throw new ArgumentException("Start date must be before end date.");
+            }
+            else if (startDate.Year == endDate.Year)
+            {
+                var monthAsciiArt = GetFullAsciiArtSameYear(startDate, endDate);
+                //Display ascii art and get user input to select month and day
+                if (monthAsciiArt != null)
+                {
+                    foreach (var month in monthAsciiArt)
+                    {
+
+                    }
+                }
+            }
+            return DateTime.Now;
+        }
     }
 }

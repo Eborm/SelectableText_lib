@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SelectableText_lib_namespace.Classes;
@@ -53,6 +54,8 @@ namespace SelectableText_lib_namespace
         private int textCount = -1;
         private List<int> writeThisText = new List<int> { 0 };
         private int writeThisTextIndex = 0;
+
+        private Dictionary<int, int> lookupTable = new Dictionary<int, int> { };
         private Dictionary<int, List<int>> selectableText = new Dictionary<int, List<int>> { };
 
         public SelectableText_lib(System.ConsoleColor BackgroundColor = ConsoleColor.Black, System.ConsoleColor ForegroundColor = ConsoleColor.White)
@@ -135,16 +138,33 @@ namespace SelectableText_lib_namespace
 
         public void SetShownText(List<int> _selectedText)
         {
+            lookupTable = new Dictionary<int, int> { };
             selectableText = new Dictionary<int, List<int>> { };
-            writeThisText = _selectedText;
+            writeThisText = new List<int> { };
 
-            if (writeThisText.Count == 0) { writeThisText.Add(0); }
+            int count = 0;
+
+            while (count < _selectedText.Count)
+            {
+                if (textDictonary.ContainsKey(_selectedText[count]))
+                {
+                    lookupTable.Add(count, _selectedText[count]);
+                    writeThisText.Add(count);
+                }
+                else
+                {
+                    throw new KeyNotFoundException($"The key '{_selectedText[count]}' was not found in the textDictonary.");
+                }
+                count++;
+            }
+
+            if (writeThisText.Count == 0) { writeThisText.Add(0); lookupTable.Add(0, 0); }
             foreach (int key in writeThisText)
             {
-                if (textDictonary[key].isExecutable)
+                if (textDictonary[lookupTable[key]].isExecutable)
                 {
                     List<int> temp = new List<int> { };
-                    foreach (var selection in textDictonary[key].selectionIndex)
+                    foreach (var selection in textDictonary[lookupTable[key]].selectionIndex)
                     {
                         temp.Add(selection.Key);
                     }
@@ -165,25 +185,44 @@ namespace SelectableText_lib_namespace
 
         public void SetShownText(List<string> textkeys)
         {
+            lookupTable = new Dictionary<int, int> { };
             writeThisText = new List<int>{ };
             selectableText = new Dictionary<int, List<int>> { };
+            List<int> _selectedText = new List<int> { }; 
             foreach (string key in textkeys)
             {
                 if (textKeyDictonary.ContainsKey(key))
                 {
-                    writeThisText.Add(textKeyDictonary[key]);
+                    _selectedText.Add(textKeyDictonary[key]);
                 }
                 else
                 {
                     throw new KeyNotFoundException($"The key '{key}' was not found in the textKeyDictonary.");
                 }
             }
+            int count = 0;
+
+            while (count < _selectedText.Count)
+            {
+                if (textDictonary.ContainsKey(_selectedText[count]))
+                {
+                    lookupTable.Add(count, _selectedText[count]);
+                    writeThisText.Add(count);
+                }
+                else
+                {
+                    throw new KeyNotFoundException($"The key '{_selectedText[count]}' was not found in the textDictonary.");
+                }
+                count++;
+            }
+
+            if (writeThisText.Count == 0) { writeThisText.Add(0); lookupTable.Add(0, 0); }
             foreach (int key in writeThisText)
             {
-                if (textDictonary[key].isExecutable)
+                if (textDictonary[lookupTable[key]].isExecutable)
                 {
                     List<int> temp = new List<int> { };
-                    foreach (var selection in textDictonary[key].selectionIndex)
+                    foreach (var selection in textDictonary[lookupTable[key]].selectionIndex)
                     {
                         temp.Add(selection.Key);
                     }
@@ -198,9 +237,8 @@ namespace SelectableText_lib_namespace
                     //selectableText.Add(key, temp);
                 }
             }
-            if (writeThisText.Count == 0) { writeThisText.Add(0); }
             writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
-            selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[writeThisText[writeThisTextIndex]].selectionIndex.Count));
+            selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[writeThisText[writeThisTextIndex]].selectionIndex.Count));
         }
         public void WriteText(string text)
         {
@@ -294,24 +332,26 @@ namespace SelectableText_lib_namespace
             Console.Clear();
             foreach (int text_key in writeThisText)
             {
+                int writeKey = lookupTable[text_key];
                 if (text_key == selectedText.Item1)
                 {
-                    if (textDictonary[text_key].hasMultipleFunctions)
+                    if (textDictonary[writeKey].hasMultipleFunctions)
                     {
-                        WriteSelectedText(textDictonary[text_key], selectedText.Item2);
+                        WriteSelectedText(textDictonary[writeKey], selectedText.Item2);
                     }
                     else
                     {
-                        WriteSelectedText(textDictonary[text_key]);
+                        WriteSelectedText(textDictonary[writeKey]);
                     }
                 }
                 else
                 {
-                    WriteText(textDictonary[text_key].GetText());
+                    WriteText(textDictonary[writeKey].GetText());
                 }
             }
             var input = _detection.AdvancedDetection();
 
+            int key = lookupTable[writeThisText[writeThisTextIndex]];
             switch (input)
             {
                 case -1:
@@ -334,7 +374,8 @@ namespace SelectableText_lib_namespace
                             writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
                         }
                     }
-                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[writeThisText[writeThisTextIndex]].selectionIndex.Count));
+                    key = lookupTable[writeThisText[writeThisTextIndex]];
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count));
                     break;
                 case 1:
                     if (writeThisTextIndex == writeThisText.Count-1)
@@ -356,27 +397,30 @@ namespace SelectableText_lib_namespace
                             writeThisTextIndex = Math.Clamp(writeThisTextIndex + 1, 0, (writeThisText.Count - 1));
                         }
                     }
-                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[writeThisText[writeThisTextIndex]].selectionIndex.Count));
+                    key = lookupTable[writeThisText[writeThisTextIndex]];
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count));
                     break;
                 case -2:
-                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2-1, 0, textDictonary[writeThisText[writeThisTextIndex]].selectionIndex.Count - 1));
+                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2-1, 0, textDictonary[key].selectionIndex.Count - 1));
                     break;
                 case 2:
-                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2+1, 0, textDictonary[writeThisText[writeThisTextIndex]].selectionIndex.Count - 1));
+                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2+1, 0, textDictonary[key].selectionIndex.Count - 1));
                     break;
                 case 3:
+                    int executeKey = lookupTable[selectedText.Item1];
+
                     if (selectedText.Item1 == -1 || selectedText.Item2 == -1)
                     {
                         break;
                     }
-                    if (textDictonary[selectedText.Item1].isExecutable && !textDictonary[selectedText.Item1].hasMultipleFunctions)
+                    if (textDictonary[executeKey].isExecutable && !textDictonary[key].hasMultipleFunctions)
                     {
                         Console.WriteLine(selectedText.Item2);
-                        textDictonary[selectedText.Item1].Execute(0);
+                        textDictonary[executeKey].Execute(0);
                     }
-                    else if (textDictonary[selectedText.Item1].isExecutable && textDictonary[selectedText.Item1].hasMultipleFunctions)
+                    else if (textDictonary[executeKey].isExecutable && textDictonary[key].hasMultipleFunctions)
                     {
-                        textDictonary[selectedText.Item1].Execute(selectedText.Item2);
+                        textDictonary[executeKey].Execute(selectedText.Item2);
                     }
                     break;
                 default:
