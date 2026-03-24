@@ -15,6 +15,7 @@ namespace test_proj
                 Console.Clear();
                 Console.WriteLine("1. Simple menu");
                 Console.WriteLine("2. Keyword menu");
+                Console.WriteLine("3. Advanced menu");
                 Console.WriteLine("3. Exit");
                 string? input = Console.ReadLine();
                 if (input == "1")
@@ -29,6 +30,10 @@ namespace test_proj
                 {
                     choice = 3;
                 }
+                else if (input == "4")
+                {
+                    choice = 4;
+                }
             }
             if (choice == 1)
             {
@@ -37,6 +42,10 @@ namespace test_proj
             else if (choice == 2)
             {
                 KeyWordMenu();
+            }
+            else if (choice == 3)
+            {
+                AdvancedMenu();
             }
         }
 
@@ -78,7 +87,19 @@ namespace test_proj
 
         static void AdvancedMenu()
         {
-
+            SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White); //First variable is used to chose if you want the intro animation
+            //Second variable is the background color of the text when it is not selected, third variable is the text color of the text
+            st.AddText("Test [yes] [no]", new List<Action>{myfunction, myfunction2}); //Bracketed text is the text that will be highlighted when the user has that row selected
+            st.AddText("Test 2 [no] [yes]", new List<Action> { myfunction2 ,myfunction}); //Bracketed text is the text that will be highlighted when the user has that row selected
+            st.AddText("some text"); //This is just text that will be displayed but not selectable as it has no function tied to it
+            st.AddText("some text2"); //This is just text that will be displayed but not selectable as it has no function tied to it
+            List<int> menu = new List<int> { 1, 0, 2, 3, 4 };
+            st.SetShownText(menu);  //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
+            //0 simply displays a nothing as this is a empty string preadded into the dictionary
+            while (true)
+            {
+                st.DisplayText(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
+            }
         }
 
         //Showcase function that clears the screen displays some text and waits for the user to press enter before returning to the menu
