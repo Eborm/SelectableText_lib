@@ -46,16 +46,23 @@ namespace SelectableText_lib_namespace
                                                                                                                  ";
         private List<char> bstlibtext = startup.ToList();
 
-        //setting up the text functions
-        private static Action VoidFunct() { return () => { }; }
+        //Dictonairy where the text is stored with an int key, and a BetterText value, the BetterText class contains the text and the function(s) that should be executed when the text is selected
         private Dictionary<int, BetterText> textDictonary = new Dictionary<int, BetterText> { };
+        //Dictonairy where the text is stored with a string key, and an int value, the int value is the key that corrosponds to the text in the textDictonary
         private Dictionary<string, int> textKeyDictonary = new Dictionary<string, int> { { "empty", 0 } };
+        //A tuple that keeps track of the currently selected text, the first item is the key of the text in the writeThisText list, and the second item is the index of the selection in the text if the text has multiple selections
         private Tuple<int, int> selectedText = new Tuple <int, int> (-1, -1);
+        //Int that keeps track of the amount of text that has been added to the textDictonary, this is used to assign keys to the text when it is added
         private int textCount = -1;
+        //A list that keeps track of the keys of the text that should be written to the console, this is used to determine the order of the text when it is written to the console
         private List<int> writeThisText = new List<int> { 0 };
+        //An int that keeps track of the index of the currently selected text in the writeThisText list, this is used to determine which text is currently selected when navigating through the text
         private int writeThisTextIndex = 0;
 
+        //A lookup table used to convert the keys in the writeThisText list to the keys in the textDictonary, this is used to determine which text should be written to the console when navigating through the text
+        //This is what allows the user to display text multiple times without having to add the same text multiple times to the textDictonary, and also allows the user to change the order of the text without having to change the keys in the textDictonary
         private Dictionary<int, int> lookupTable = new Dictionary<int, int> { };
+        //A dictonary that keeps track of which text is selectable that is currently being shown, the key is the key of the text in the writeThisText list, and the value is a list of the keys of the selections in the textDictonary that are selectable for that text, this is used to determine which text is selectable when navigating through the text
         private Dictionary<int, List<int>> selectableText = new Dictionary<int, List<int>> { };
 
         public SelectableText_lib(System.ConsoleColor BackgroundColor = ConsoleColor.Black, System.ConsoleColor ForegroundColor = ConsoleColor.White)
