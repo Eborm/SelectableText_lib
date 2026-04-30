@@ -103,18 +103,21 @@ namespace SelectableText_lib_namespace
             textDictonary[0] = new BetterText("");
         }
 
+        //Add in a text to the textDictonary this text does not have a function attached to it, and is not selectable, this is used for text that should be displayed but not interacted with
         public void AddText(string text)
         {
             textCount++;
             textDictonary.Add(textCount, new BetterText(text));
         }
 
+        //Add in a text to the textDictonary this text has a function attached to it, and is selectable, this is used for text that should be displayed and interacted with, when the text is selected the function will be executed
         public void AddText(string text, Action function)
         {
             textCount++;
             textDictonary.Add(textCount, new BetterText(text, function));
         }
 
+        //Add in a text to the textDictonary this text has multiple functions attached to it, and is selectable, this is used for text that should be displayed and interacted with, when the text is selected the function that corrosponds to the selection index will be executed
         public void AddText(string text, List<Action> functions)
         {
             textCount++;
@@ -122,6 +125,7 @@ namespace SelectableText_lib_namespace
 
         }
 
+        //Add in a text to the textDictonary this text does not have a function attached to it, and is not selectable, this is used for text that should be displayed but not interacted with, the keyword is used to add the text to the textKeyDictonary so it can be accessed by the keyword instead of the key in the textDictonary
         public void AddText(string keyword, string text)
         {
             textCount++;
@@ -129,6 +133,7 @@ namespace SelectableText_lib_namespace
             textKeyDictonary.Add(keyword, textCount);
         }
 
+        //Add in a text to the textDictonary this text has a function attached to it, and is selectable, this is used for text that should be displayed and interacted with, when the text is selected the function will be executed, the keyword is used to add the text to the textKeyDictonary so it can be accessed by the keyword instead of the key in the textDictonary
         public void AddText(string keyword, string text, Action function)
         {
             textCount++;
@@ -136,6 +141,7 @@ namespace SelectableText_lib_namespace
             textKeyDictonary.Add(keyword, textCount);
         }
 
+        //Add in a text to the textDictonary this text has multiple functions attached to it, and is selectable, this is used for text that should be displayed and interacted with, when the text is selected the function that corrosponds to the selection index will be executed, the keyword is used to add the text to the textKeyDictonary so it can be accessed by the keyword instead of the key in the textDictonary
         public void AddText(string keyword, string text, List<Action> functions)
         {
             textCount++;
@@ -143,14 +149,33 @@ namespace SelectableText_lib_namespace
             textKeyDictonary.Add(keyword, textCount);
         }
 
+        //Add in a text to the textDictonary this text is added as a BetterText object, this is used when the user wants to create a BetterText object first and then add it to the textDictonary, this allows the user to use the functions of the BetterText class to modify the text before adding it to the textDictonary
+        public void AddText(BetterText text)
+        {
+            textCount++;
+            textDictonary.Add(textCount, text);
+        }
+
+        //Add in a text to the textDictonary this text is added as a BetterText object, this is used when the user wants to create a BetterText object first and then add it to the textDictonary, this allows the user to use the functions of the BetterText class to modify the text before adding it to the textDictonary, the keyword is used to add the text to the textKeyDictonary so it can be accessed by the keyword instead of the key in the textDictonary
+        public void AddText(string keyword, BetterText text)
+        {
+            textCount++;
+            textDictonary.Add(textCount, text);
+            textKeyDictonary.Add(keyword, textCount);
+        }
+
+        //Set the text that should be shown on the console, this is done by passing in a list of the keys of the text in the textDictonary that should be shown, the order of the keys in the list determines the order of the text on the console, this also updates the selectableText dictonary and the lookupTable dictonary to match the new text that is being shown
         public void SetShownText(List<int> _selectedText)
         {
+            //Create a new lookup table and selectable text dictonary to match the new text that is being shown, this is done to remove any text that is no longer being shown from the lookup table and selectable text dictonary, and to add any new text that is being shown to the lookup table and selectable text dictonary
             lookupTable = new Dictionary<int, int> { };
             selectableText = new Dictionary<int, List<int>> { };
             writeThisText = new List<int> { };
 
+            //keep track of the amount of text
             int count = 0;
 
+            //Loop trough the selected text and add the keys of the text that should be shown to the lookup table and the writeThisText list, this is done to determine which text should be written to the console when navigating through the text
             while (count < _selectedText.Count)
             {
                 if (textDictonary.ContainsKey(_selectedText[count]))
