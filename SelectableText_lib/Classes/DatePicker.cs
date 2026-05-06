@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
@@ -10,30 +11,36 @@ namespace SelectableText_lib_namespace.Classes
 {
     public class DatePicker
     {
+        private DateTime SelectedDate = new DateTime();
         public DatePicker()
         {
-            
         }
-        public Dictionary<int, string> GetFullAsciiArtSameYear(DateTime startDate, DateTime endDate)
+
+        public DateTime DatePickerSingleDate(DateTime startDate, DateTime endDate)
         {
-            //Devide infromation about what months should be added to the calander picking system so the appropriate months can be added
+            SelectableText_lib stlib = new SelectableText_lib(true);
+
             var startMonth = startDate.Month;
             var startYear = startDate.Year;
             var endMonth = endDate.Month;
             var endYear = endDate.Year;
 
-            //Create a dictonary to store the month ascii art and the corrosponing month number
-            var monthAsciiArt = new Dictionary<int, string>();
-
-            //Loop trough each month
-            for (int i = startMonth; i < endMonth+1; i++)
+            if (startDate > endDate)
             {
-                //Get ascii art and add it to the dictionary
-                string ascii = GetAsciiArtForMonth(i, startYear);
-                monthAsciiArt.Add(i, ascii);
+                throw new ArgumentException("Start date must be before end date.");
+            }
+            else if (startDate.Year == endDate.Year)
+            {
+                foreach (var month in Enumerable.Range(startMonth, endMonth - startMonth + 1))
+                {
+                    foreach (var line in GetBetterTextForMonth(month, startYear))
+                    {
+                        stlib.AddText(line);
+                    }
+                }
             }
 
-            return monthAsciiArt;
+            return new DateTime();
         }
 
         public Dictionary<int, Dictionary<int, string>> GetFullAsciiArt(DateTime startDate, DateTime endDate)
@@ -53,8 +60,8 @@ namespace SelectableText_lib_namespace.Classes
                     var monthAsciiArt = new Dictionary<int, string>();
                     for (int j = startMonth; j < 13; j++)
                     {
-                        string ascii = GetAsciiArtForMonth(j, i);
-                        monthAsciiArt.Add(j, ascii);
+                        //string ascii = GetAsciiArtForMonth(j, i);
+                        //monthAsciiArt.Add(j, ascii);
                     }
                     yearlyAsciiArt.Add(i, monthAsciiArt);
                 }
@@ -63,8 +70,8 @@ namespace SelectableText_lib_namespace.Classes
                     var monthAsciiArt = new Dictionary<int, string>();
                     for (int j = 1; j < endMonth+1; j++)
                     {
-                        string ascii = GetAsciiArtForMonth(j, i);
-                        monthAsciiArt.Add(j, ascii);
+                        //string ascii = GetAsciiArtForMonth(j, i);
+                        //monthAsciiArt.Add(j, ascii);
                     }
                     yearlyAsciiArt.Add(i, monthAsciiArt);
                 }
@@ -73,8 +80,8 @@ namespace SelectableText_lib_namespace.Classes
                     var monthAsciiArt = new Dictionary<int, string>();
                     for (int j = 1; j < 13; j++)
                     {
-                        string ascii = GetAsciiArtForMonth(j, i);
-                        monthAsciiArt.Add(j, ascii);
+                        //string ascii = //GetAsciiArtForMonth(j, i);
+                        //monthAsciiArt.Add(j, ascii);
                     }
                     yearlyAsciiArt.Add(i, monthAsciiArt);
                 }
@@ -82,32 +89,55 @@ namespace SelectableText_lib_namespace.Classes
             return yearlyAsciiArt;
         }
 
-        public string GetAsciiArtForMonth(int month, int year)
+        public List<BetterText> GetBetterTextForMonth(int month, int year)
         {
             var stringBuilder = new StringBuilder();
             DateTime firstDay = new DateTime(year, month, 1);
             int numberOfDays = DateTime.DaysInMonth(year, month);
 
+            List<DateTime> dates = new List<DateTime>();
+            foreach (var day in Enumerable.Range(1, numberOfDays))
+            {
+                dates.Add(new DateTime(year, month, day));
+            }
+
             string monthNameAndYear = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {year}";
             stringBuilder.AppendLine(monthNameAndYear.PadLeft((20 + monthNameAndYear.Length)/2).PadRight(20));
             stringBuilder.AppendLine("Su Mo Tu We Th Fr Sa");
 
+            List<BetterText> betterTextList = new List<BetterText>();
+
+            foreach (var line in stringBuilder.ToString().Split('\n'))
+            {
+                BetterText betterText = new BetterText(line);
+                betterTextList.Add(betterText);
+            }
+
             int Offset = (int)firstDay.DayOfWeek % 7;
             int collum = 0;
 
+            var firstline = new StringBuilder();
+
             for (int i = 0; i < Offset; i++)
             {
-                stringBuilder.Append("   ");
+
+                firstline.Append("   ");
                 collum++;
             }
 
+            List<Action> functions = new List<Action>();
+
             for (int day = 1; day <= numberOfDays; day++)
             {
-                stringBuilder.Append($"[{day,2} ]");
+                firstline.Append($"[{day,2} ]");
                 collum++;
+                Action action = () => SelectedDate = new DateTime(year, month, day);
+                functions.Add(action);
                 if (collum == 7)
                 {
-                    stringBuilder.AppendLine();
+                    BetterText betterText = new BetterText(firstline.ToString(), functions);
+                    betterTextList.Add(betterText);
+                    firstline = new StringBuilder();
                     collum = 0;
                 }
             }
@@ -116,30 +146,11 @@ namespace SelectableText_lib_namespace.Classes
             {
                 stringBuilder.AppendLine();
             }
-            return stringBuilder.ToString();
-        }
+            string arrowkeys = " [<]     [>]";
+            stringBuilder.AppendLine(arrowkeys.PadLeft((20 + arrowkeys.Length) / 2).PadRight(20));
 
-        public DateTime DateTimePicker(DateTime startDate, DateTime endDate)
-        {
-            SelectableText_lib st = new SelectableText_lib(true);
-            //Throw error if start date is after end date as this is not valid input
-            if (startDate > endDate)
-            {
-                throw new ArgumentException("Start date must be before end date.");
-            }
-            else if (startDate.Year == endDate.Year)
-            {
-                var monthAsciiArt = GetFullAsciiArtSameYear(startDate, endDate);
-                //Display ascii art and get user input to select month and day
-                if (monthAsciiArt != null)
-                {
-                    foreach (var month in monthAsciiArt)
-                    {
 
-                    }
-                }
-            }
-            return DateTime.Now;
+            return betterTextList;
         }
     }
 }
