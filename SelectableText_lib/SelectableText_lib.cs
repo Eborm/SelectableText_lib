@@ -51,7 +51,7 @@ namespace SelectableText_lib_namespace
         //Dictonairy where the text is stored with a string key, and an int value, the int value is the key that corrosponds to the text in the textDictonary
         private Dictionary<string, int> textKeyDictonary = new Dictionary<string, int> { { "empty", 0 } };
         //A tuple that keeps track of the currently selected text, the first item is the key of the text in the writeThisText list, and the second item is the index of the selection in the text if the text has multiple selections
-        private Tuple<int, int> selectedText = new Tuple <int, int> (-1, -1);
+        private Tuple<int, int> selectedText = new Tuple<int, int>(-1, -1);
         //Int that keeps track of the amount of text that has been added to the textDictonary, this is used to assign keys to the text when it is added
         private int textCount = -1;
         //A list that keeps track of the keys of the text that should be written to the console, this is used to determine the order of the text when it is written to the console
@@ -218,9 +218,9 @@ namespace SelectableText_lib_namespace
         public void SetShownText(List<string> textkeys)
         {
             lookupTable = new Dictionary<int, int> { };
-            writeThisText = new List<int>{ };
+            writeThisText = new List<int> { };
             selectableText = new Dictionary<int, List<int>> { };
-            List<int> _selectedText = new List<int> { }; 
+            List<int> _selectedText = new List<int> { };
             foreach (string key in textkeys)
             {
                 if (textKeyDictonary.ContainsKey(key))
@@ -389,7 +389,7 @@ namespace SelectableText_lib_namespace
                 case -1:
                     if (writeThisTextIndex == 0)
                     {
-                        writeThisTextIndex = writeThisText.Count-1;
+                        writeThisTextIndex = writeThisText.Count - 1;
                     }
                     else
                     {
@@ -399,7 +399,7 @@ namespace SelectableText_lib_namespace
                     {
                         if (writeThisTextIndex == 0)
                         {
-                            writeThisTextIndex = writeThisText.Count-1;
+                            writeThisTextIndex = writeThisText.Count - 1;
                         }
                         else
                         {
@@ -407,10 +407,10 @@ namespace SelectableText_lib_namespace
                         }
                     }
                     key = lookupTable[writeThisText[writeThisTextIndex]];
-                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count));
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[key].selectionIndex.Count - 1));
                     break;
                 case 1:
-                    if (writeThisTextIndex == writeThisText.Count-1)
+                    if (writeThisTextIndex == writeThisText.Count - 1)
                     {
                         writeThisTextIndex = 0;
                     }
@@ -420,7 +420,7 @@ namespace SelectableText_lib_namespace
                     }
                     while (!selectableText.ContainsKey(writeThisText[writeThisTextIndex]))
                     {
-                        if (writeThisText[writeThisTextIndex] == writeThisText[writeThisText.Count-1])
+                        if (writeThisText[writeThisTextIndex] == writeThisText[writeThisText.Count - 1])
                         {
                             writeThisTextIndex = 0;
                         }
@@ -430,13 +430,13 @@ namespace SelectableText_lib_namespace
                         }
                     }
                     key = lookupTable[writeThisText[writeThisTextIndex]];
-                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count));
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[key].selectionIndex.Count - 1));
                     break;
                 case -2:
-                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2-1, 0, textDictonary[key].selectionIndex.Count - 1));
+                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count - 1));
                     break;
                 case 2:
-                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2+1, 0, textDictonary[key].selectionIndex.Count - 1));
+                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2 + 1, 0, textDictonary[key].selectionIndex.Count - 1));
                     break;
                 case 3:
                     int executeKey = lookupTable[selectedText.Item1];
