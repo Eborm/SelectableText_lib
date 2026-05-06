@@ -361,6 +361,27 @@ namespace SelectableText_lib_namespace
 
         public void DisplayText()
         {
+            if (writeThisTextIndex == 0)
+            {
+                writeThisTextIndex = 0;
+            }
+            else
+            {
+                writeThisTextIndex = Math.Clamp(writeThisTextIndex, 0, (writeThisText.Count - 1));
+            }
+            while (!selectableText.ContainsKey(writeThisText[writeThisTextIndex]))
+            {
+                if (writeThisTextIndex == 0)
+                {
+                    writeThisTextIndex = writeThisText.Count - 1;
+                }
+                else
+                {
+                    writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
+                }
+            }
+            var keys = lookupTable[writeThisText[writeThisTextIndex]];
+            selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[keys].selectionIndex.Count - 1));
             Console.Clear();
             foreach (int text_key in writeThisText)
             {
