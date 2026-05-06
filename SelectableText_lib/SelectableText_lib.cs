@@ -407,7 +407,7 @@ namespace SelectableText_lib_namespace
                         }
                     }
                     key = lookupTable[writeThisText[writeThisTextIndex]];
-                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[key].selectionIndex.Count-1));
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count));
                     break;
                 case 1:
                     if (writeThisTextIndex == writeThisText.Count-1)
@@ -430,7 +430,7 @@ namespace SelectableText_lib_namespace
                         }
                     }
                     key = lookupTable[writeThisText[writeThisTextIndex]];
-                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[key].selectionIndex.Count -1));
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count));
                     break;
                 case -2:
                     selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2-1, 0, textDictonary[key].selectionIndex.Count - 1));

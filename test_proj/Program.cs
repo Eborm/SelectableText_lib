@@ -9,8 +9,6 @@ namespace test_proj
     {
         static void Main(string[] args)
         {
-            test();
-            Console.ReadLine();
             int? choice = null;
             while (choice == null)
             {
@@ -118,30 +116,6 @@ namespace test_proj
             Console.Clear();
             Console.WriteLine("Test function 2");
             Console.ReadLine();
-        }
-        static void test()
-        {
-            SelectableText_lib stlib = new SelectableText_lib(true);
-
-            DatePicker dp = new DatePicker();
-            List<BetterText> text = dp.GetBetterTextForMonth(5, 2024);
-            List<int> menu = new List<int> { };
-            int counter = 1;
-
-
-            foreach (BetterText bt in text)
-            {
-                stlib.AddText(bt);
-                menu.Add(counter);
-                counter++;
-            }
-
-
-            stlib.SetShownText(menu);
-            while (true)
-            {
-                stlib.DisplayText();
-            }
         }
     }
 }
