@@ -68,8 +68,9 @@ namespace SelectableText_lib_namespace.Classes
                     }
                 }
             }
-
-            return SelectedDate;
+            var SelectedDateChache = SelectedDate;
+            SelectedDate = new DateTime();
+            return SelectedDateChache;
         }
 
         private List<BetterText> GetBetterTextForMonth(int month, int year)
