@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
@@ -58,16 +59,23 @@ namespace SelectableText_lib_namespace.Classes
                     }
                     if (CurrentMonth != month)
                     {
-                        //CurrentMonth = Math.Clamp(month, startMonth, endMonth);
-                        break;
-                    }
-                    if (CurrentYear < startYear || CurrentYear > endYear)
-                    {
-                        //CurrentYear = Math.Clamp(CurrentYear, startYear, endYear);
+                        CurrentMonth = Math.Clamp(CurrentMonth, startMonth, endMonth);
+                        if (CurrentYear < startYear)
+                        {
+                            CurrentYear = startYear;
+                            CurrentMonth = startMonth;
+                            break;
+                        }
+                        else if (CurrentYear > endYear)
+                        {
+                            CurrentYear = endYear;
+                            CurrentMonth = endMonth;
+                        }
                         break;
                     }
                 }
             }
+            //Chache current selected date and reset it to be able to use the DatePicker again if needed
             var SelectedDateChache = SelectedDate;
             SelectedDate = new DateTime();
             return SelectedDateChache;
