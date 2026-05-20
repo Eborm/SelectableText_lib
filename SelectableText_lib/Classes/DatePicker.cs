@@ -12,9 +12,9 @@ namespace SelectableText_lib_namespace.Classes
 {
     public class DatePicker
     {
-        private DateTime SelectedDate = new DateTime();
-        private int CurrentMonth = 1;
-        private int CurrentYear = 1;
+        private DateTime selectedDate = new DateTime();
+        private int currentMonth = 1;
+        private int currentYear = 1;
         public DatePicker()
         {
         }
@@ -23,9 +23,9 @@ namespace SelectableText_lib_namespace.Classes
         {
             //Get the month and year of the start and end date to be able to display the appropriate months in the calander for the user to select a date from
             var startMonth = startDate.Month;
-            CurrentMonth = startMonth;
+            currentMonth = startMonth;
             var startYear = startDate.Year;
-            CurrentYear = startYear;
+            currentYear = startYear;
             var endMonth = endDate.Month;
             var endYear = endDate.Year;
 
@@ -34,14 +34,14 @@ namespace SelectableText_lib_namespace.Classes
             {
                 throw new ArgumentException("Start date must be before end date.");
             }
-            while (SelectedDate == new DateTime())
+            while (selectedDate == new DateTime())
             {
                 //Initialize the SelectableText_lib to be able to display the calander for the user to select a date
                 SelectableText_lib stlib = new SelectableText_lib(true);
 
                 List<int> menu = new List<int> { };
                 int counter = 1;
-                foreach (var line in GetBetterTextForMonth(CurrentMonth, CurrentYear))
+                foreach (var line in GetBetterTextForMonth(currentMonth, currentYear))
                 {
                     stlib.AddText(line);
                     menu.Add(counter);
@@ -49,35 +49,35 @@ namespace SelectableText_lib_namespace.Classes
                 }
 
                 stlib.SetShownText(menu);
-                int month = CurrentMonth;
-                while (month == CurrentMonth)
+                int month = currentMonth;
+                while (month == currentMonth)
                 {
                     stlib.DisplayText();
-                    if (SelectedDate != new DateTime())
+                    if (selectedDate != new DateTime())
                     {
                         break;
                     }
-                    if (CurrentMonth != month)
+                    if (currentMonth != month)
                     {
-                        CurrentMonth = Math.Clamp(CurrentMonth, startMonth, endMonth);
-                        if (CurrentYear < startYear)
+                        currentMonth = Math.Clamp(currentMonth, startMonth, endMonth);
+                        if (currentYear < startYear)
                         {
-                            CurrentYear = startYear;
-                            CurrentMonth = startMonth;
+                            currentYear = startYear;
+                            currentMonth = startMonth;
                             break;
                         }
-                        else if (CurrentYear > endYear)
+                        else if (currentYear > endYear)
                         {
-                            CurrentYear = endYear;
-                            CurrentMonth = endMonth;
+                            currentYear = endYear;
+                            currentMonth = endMonth;
                         }
                         break;
                     }
                 }
             }
             //Chache current selected date and reset it to be able to use the DatePicker again if needed
-            var SelectedDateChache = SelectedDate;
-            SelectedDate = new DateTime();
+            var SelectedDateChache = selectedDate;
+            selectedDate = new DateTime();
             return SelectedDateChache;
         }
 
@@ -119,7 +119,7 @@ namespace SelectableText_lib_namespace.Classes
             }
 
             //Create the rest of the calander by adding the days to the first line and creating a new line when the collum reaches 7
-            //Also add the appropriate functions to each day so when a day is selected the SelectedDate variable is updated to the selected date
+            //Also add the appropriate functions to each day so when a day is selected the selectedDate variable is updated to the selected date
             List<Action> functions = new List<Action>();
 
             for (int day = 1; day <= numberOfDays; day++)
@@ -127,7 +127,7 @@ namespace SelectableText_lib_namespace.Classes
                 firstline.Append($"[{day,2} ]");
                 collum++;
                 int tempday = day;
-                Action action = () => SelectedDate = new DateTime(year, month, tempday);
+                Action action = () => selectedDate = new DateTime(year, month, tempday);
                 functions.Add(action);
                 if (collum == 7)
                 {
@@ -152,26 +152,26 @@ namespace SelectableText_lib_namespace.Classes
 
             //Handle the month changing when the left and right arrow keys are pressed
             Action left = () =>             {
-                if (CurrentMonth == 1)
+                if (currentMonth == 1)
                 {
-                    CurrentMonth = 12;
-                    CurrentYear--;
+                    currentMonth = 12;
+                    currentYear--;
                 }
                 else
                 {
-                    CurrentMonth--;
+                    currentMonth--;
                 }
             };
 
             Action right = () =>             {
-                if (CurrentMonth == 12)
+                if (currentMonth == 12)
                 {
-                    CurrentMonth = 1;
-                    CurrentYear++;
+                    currentMonth = 1;
+                    currentYear++;
                 }
                 else
                 {
-                    CurrentMonth++;
+                    currentMonth++;
                 }
             };
 
