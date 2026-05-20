@@ -3,6 +3,13 @@ using System.Security.Cryptography.X509Certificates;
 using static System.Net.Mime.MediaTypeNames;
 using SelectableText_lib_namespace.Classes;
 using SelectableText_lib_namespace.Deprecated.Classes;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SelectableText_lib_namespace.Deprecated
 {

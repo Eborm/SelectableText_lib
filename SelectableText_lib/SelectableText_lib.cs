@@ -483,5 +483,130 @@ namespace SelectableText_lib_namespace
                     break;
             }
         }
+
+        public void DisplayText(ref bool loopVariable)
+        {
+            if (writeThisTextIndex == 0)
+            {
+                writeThisTextIndex = 0;
+            }
+            else
+            {
+                writeThisTextIndex = Math.Clamp(writeThisTextIndex, 0, (writeThisText.Count - 1));
+            }
+            while (!selectableText.ContainsKey(writeThisText[writeThisTextIndex]))
+            {
+                if (writeThisTextIndex == 0)
+                {
+                    writeThisTextIndex = writeThisText.Count - 1;
+                }
+                else
+                {
+                    writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
+                }
+            }
+            var keys = lookupTable[writeThisText[writeThisTextIndex]];
+            selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[keys].selectionIndex.Count - 1));
+            Console.Clear();
+            foreach (int text_key in writeThisText)
+            {
+                int writeKey = lookupTable[text_key];
+                if (text_key == selectedText.Item1)
+                {
+                    if (textDictonary[writeKey].hasMultipleFunctions)
+                    {
+                        WriteSelectedText(textDictonary[writeKey], selectedText.Item2);
+                    }
+                    else
+                    {
+                        WriteSelectedText(textDictonary[writeKey]);
+                    }
+                }
+                else
+                {
+                    WriteText(textDictonary[writeKey].GetText());
+                }
+            }
+            var input = _detection.AdvancedDetection();
+
+            int key = lookupTable[writeThisText[writeThisTextIndex]];
+            switch (input)
+            {
+                case -1:
+                    if (writeThisTextIndex == 0)
+                    {
+                        writeThisTextIndex = writeThisText.Count - 1;
+                    }
+                    else
+                    {
+                        writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
+                    }
+                    while (!selectableText.ContainsKey(writeThisText[writeThisTextIndex]))
+                    {
+                        if (writeThisTextIndex == 0)
+                        {
+                            writeThisTextIndex = writeThisText.Count - 1;
+                        }
+                        else
+                        {
+                            writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
+                        }
+                    }
+                    key = lookupTable[writeThisText[writeThisTextIndex]];
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[key].selectionIndex.Count - 1));
+                    break;
+                case 1:
+                    if (writeThisTextIndex == writeThisText.Count - 1)
+                    {
+                        writeThisTextIndex = 0;
+                    }
+                    else
+                    {
+                        writeThisTextIndex = Math.Clamp(writeThisTextIndex + 1, 0, (writeThisText.Count - 1));
+                    }
+                    while (!selectableText.ContainsKey(writeThisText[writeThisTextIndex]))
+                    {
+                        if (writeThisText[writeThisTextIndex] == writeThisText[^1])
+                        {
+                            writeThisTextIndex = 0;
+                        }
+                        else
+                        {
+                            writeThisTextIndex = Math.Clamp(writeThisTextIndex + 1, 0, (writeThisText.Count - 1));
+                        }
+                    }
+                    key = lookupTable[writeThisText[writeThisTextIndex]];
+                    selectedText = new Tuple<int, int>(writeThisText[writeThisTextIndex], Math.Clamp(selectedText.Item2, 0, textDictonary[key].selectionIndex.Count - 1));
+                    break;
+                case -2:
+                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[key].selectionIndex.Count - 1));
+                    break;
+                case 2:
+                    selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2 + 1, 0, textDictonary[key].selectionIndex.Count - 1));
+                    break;
+                case 3:
+                    int executeKey = lookupTable[selectedText.Item1];
+
+                    if (selectedText.Item1 == -1 || selectedText.Item2 == -1)
+                    {
+                        break;
+                    }
+                    if (textDictonary[executeKey].isExecutable && !textDictonary[key].hasMultipleFunctions)
+                    {
+                        Console.WriteLine(selectedText.Item2);
+                        textDictonary[executeKey].Execute(0);
+                    }
+                    else if (textDictonary[executeKey].isExecutable && textDictonary[key].hasMultipleFunctions)
+                    {
+                        textDictonary[executeKey].Execute(selectedText.Item2);
+                    }
+                    break;
+                case 0:
+                    loopVariable = false;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

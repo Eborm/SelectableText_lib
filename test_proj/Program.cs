@@ -64,6 +64,7 @@ namespace showcase_proj
 
         static void KeyWordMenu()
         {
+            var loop = true; //Setup loop variable that allows us to exit the menu when we want
             SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White); //First variable is used to chose if you want the intro animation
             //Second variable is the background color of the text when it is not selected, third variable is the text color of the text
             //These will be inverted when the text is selected, so the background color will become the text color and the text color will become the background color
@@ -74,14 +75,15 @@ namespace showcase_proj
             List<string> menu = new List<string> { "test", "empty", "test2", "sometext", "sometext2" };
             st.SetShownText(menu); //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
             //empty simply displays a nothing as this is a empty string preadded into the dictionary
-            while (true)
+            while (loop)  //Use loop variable to keep the menu running when the user presses escape it will be detected and the while loop will stop
             {
-                st.DisplayText(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
+                st.DisplayText(ref loop); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
             }
         }
 
         static void SimpleMenu()
         {
+            var loop = true; //Setup look variable that allows us to exit the menu when we want
             SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White); //First variable is used to chose if you want the intro animation
             //Second variable is the background color of the text when it is not selected, third variable is the text color of the text
             st.AddText("Test [yes]", MyFunction); //Bracketed text is the text that will be highlighted when the user has that row selected
@@ -91,14 +93,15 @@ namespace showcase_proj
             List<int> menu = new List<int> { 1, 0, 2, 3, 4 };
             st.SetShownText(menu);  //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
             //0 simply displays a nothing as this is a empty string preadded into the dictionary
-            while (true)
+            while (loop) //Use loop variable to keep the menu running when the user presses escape it will be detected and the while loop will stop
             {
-                st.DisplayText(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
+                st.DisplayText(ref loop); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
             }
         }
 
         static void AdvancedMenu()
         {
+            var loop = true; //Setup look variable that allows us to exit the menu when we want
             SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White); //First variable is used to chose if you want the intro animation
             //Second variable is the background color of the text when it is not selected, third variable is the text color of the text
             st.AddText("Test [yes] [no]", new List<Action> { MyFunction, MyFunction2 }); //Bracketed text is the text that will be highlighted when the user has that row selected
@@ -108,9 +111,9 @@ namespace showcase_proj
             List<int> menu = new List<int> { 1, 0, 2, 3, 4 };
             st.SetShownText(menu);  //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
             //0 simply displays a nothing as this is a empty string preadded into the dictionary
-            while (true)
+            while (loop) //Use loop variable to keep the menu running when the user presses escape it will be detected and the while loop will stop
             {
-                st.DisplayText(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
+                st.DisplayText(ref loop); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
             }
         }
 
