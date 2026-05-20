@@ -21,7 +21,7 @@ namespace SelectableText_lib_namespace
         private double x = 0.002;
 
         //startup animation
-        private static string startup =
+        private readonly static string startup =
 @"          _____                _____                    _____            _____                    _____          
          /\    \              /\    \                  /\    \          /\    \                  /\    \         
         /::\    \            /::\    \                /::\____\        /::\    \                /::\    \        
@@ -44,7 +44,7 @@ namespace SelectableText_lib_namespace
         \::/    /                                     \::/    /        \::/    /                \::/    /        
          \/____/                                       \/____/          \/____/                  \/____/              
                                                                                                                  ";
-        private List<char> bstlibtext = startup.ToList();
+        private readonly List<char> bstlibtext = startup.ToList();
 
         //Dictonairy where the text is stored with an int key, and a BetterText value, the BetterText class contains the text and the function(s) that should be executed when the text is selected
         private Dictionary<int, BetterText> textDictonary = new Dictionary<int, BetterText> { };
@@ -195,7 +195,7 @@ namespace SelectableText_lib_namespace
             {
                 if (textDictonary[lookupTable[key]].isExecutable)
                 {
-                    List<int> temp = new List<int> { };
+                    var temp = new List<int> { };
                     foreach (var selection in textDictonary[lookupTable[key]].selectionIndex)
                     {
                         temp.Add(selection.Key);
@@ -220,7 +220,7 @@ namespace SelectableText_lib_namespace
             lookupTable = new Dictionary<int, int> { };
             writeThisText = new List<int> { };
             selectableText = new Dictionary<int, List<int>> { };
-            List<int> _selectedText = new List<int> { };
+            var _selectedText = new List<int> { };
             foreach (string key in textkeys)
             {
                 if (textKeyDictonary.ContainsKey(key))
@@ -253,7 +253,7 @@ namespace SelectableText_lib_namespace
             {
                 if (textDictonary[lookupTable[key]].isExecutable)
                 {
-                    List<int> temp = new List<int> { };
+                    var temp = new List<int> { };
                     foreach (var selection in textDictonary[lookupTable[key]].selectionIndex)
                     {
                         temp.Add(selection.Key);
@@ -272,7 +272,7 @@ namespace SelectableText_lib_namespace
             writeThisTextIndex = Math.Clamp(writeThisTextIndex - 1, 0, (writeThisText.Count - 1));
             selectedText = new Tuple<int, int>(selectedText.Item1, Math.Clamp(selectedText.Item2 - 1, 0, textDictonary[writeThisText[writeThisTextIndex]].selectionIndex.Count));
         }
-        public void WriteText(string text)
+        public static void WriteText(string text)
         {
             List<char> splitText = text.ToList();
             foreach (char c in splitText)
@@ -338,7 +338,7 @@ namespace SelectableText_lib_namespace
             Console.WriteLine();
         }
 
-        public void WriteSelectedText(string text)
+        public static void WriteSelectedText(string text)
         {
             List<char> splitText = text.ToList();
             if (string.Join("", splitText).Contains('['))
@@ -441,7 +441,7 @@ namespace SelectableText_lib_namespace
                     }
                     while (!selectableText.ContainsKey(writeThisText[writeThisTextIndex]))
                     {
-                        if (writeThisText[writeThisTextIndex] == writeThisText[writeThisText.Count - 1])
+                        if (writeThisText[writeThisTextIndex] == writeThisText[^1])
                         {
                             writeThisTextIndex = 0;
                         }
