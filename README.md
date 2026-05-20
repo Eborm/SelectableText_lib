@@ -57,7 +57,7 @@ public static void myfunction2()
 }
 ```
 
-#### Other Examples in `test_proj/Program.cs`:
+#### Other Examples in `showcase_proj/Program.cs`:
 
 - **SimpleMenu** – demonstrates basic menu creation.
 - **AdvancedMenu** – shows multi-action items.
@@ -90,4 +90,4 @@ MIT
 
 ---
 
-_For more advanced usage and additional scenarios, review the full example in [`test_proj/Program.cs`](https://github.com/Eborm/SelectableText_lib/blob/main/test_proj/Program.cs)._
+_For more advanced usage and additional scenarios, review the full example in [`showcase_proj/Program.cs`](https://github.com/Eborm/SelectableText_lib/blob/main/showcase_proj/Program.cs)._
