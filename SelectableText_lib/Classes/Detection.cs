@@ -26,6 +26,9 @@ namespace SelectableText_lib_namespace.Classes
                 case "Enter":
                     direction = 2;
                     break;
+                case "ESC":
+                    direction = 0;
+                    break;
                 default:
                     break;
             }
@@ -57,6 +60,9 @@ namespace SelectableText_lib_namespace.Classes
 
                 case "RightArrow":
                     direction = 2;
+                    break;
+                case "ESC":
+                    direction = 0;
                     break;
                 default:
                     break;

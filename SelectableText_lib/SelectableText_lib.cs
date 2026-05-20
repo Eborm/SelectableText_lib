@@ -476,6 +476,9 @@ namespace SelectableText_lib_namespace
                         textDictonary[executeKey].Execute(selectedText.Item2);
                     }
                     break;
+                case 0:
+                    Environment.Exit(0);
+                    break;
                 default:
                     break;
             }
