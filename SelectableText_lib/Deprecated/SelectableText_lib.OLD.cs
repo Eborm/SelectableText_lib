@@ -2,6 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using static System.Net.Mime.MediaTypeNames;
 using SelectableText_lib_namespace.Classes;
+using SelectableText_lib_namespace.Deprecated.Classes;
 
 namespace SelectableText_lib_namespace.Deprecated
 {
@@ -12,7 +13,7 @@ namespace SelectableText_lib_namespace.Deprecated
         private ConsoleColor ForegroundColor;
 
         //setting up Detection and ShortTimeOut classes
-        private Detection _detection = new Detection();
+        private Detection_OLD _detection = new Detection_OLD();
         private ShortTimeOut _sb = new ShortTimeOut();
         private double x = 0.002;
 

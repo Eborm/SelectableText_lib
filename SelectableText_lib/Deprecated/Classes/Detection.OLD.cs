@@ -4,10 +4,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelectableText_lib_namespace.Classes
+namespace SelectableText_lib_namespace.Deprecated.Classes
 {
-    internal class Detection
+    internal class Detection_OLD
     {
+        public int DetectUpDown()
+        {
+            int direction = 0;
+            var key = Console.ReadKey(false).Key;
+
+            switch (key.ToString())
+            {
+                case "UpArrow":
+                    direction = -1;
+                    break;
+
+                case "DownArrow":
+                    direction = 1;
+                    break;
+
+                case "Enter":
+                    direction = 2;
+                    break;
+                case "ESC":
+                    direction = 0;
+                    break;
+                default:
+                    break;
+            }
+            return direction;
+        }
+
         public int AdvancedDetection()
         {
             int direction = 0;
