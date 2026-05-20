@@ -10,6 +10,10 @@ A C# library for enabling selectable text that runs functions upon selection.
 
 The `test_proj` directory contains a sample console project showcasing different usage scenarios, such as simple menus, keyword-driven menus, advanced multi-action menus, and a calendar picker.
 
+## Shorter menu's
+
+Using the library you can make a 4 choice + exit menu which is around 53 lines (using a switch case to sort the input). To around 15 lines using the library. (The numbers where directly pulled from the `test_proj` comparing the main function to the SimpleMenu function).
+
 ### Sample Code: Creating a Keyword Menu
 
 ```csharp
