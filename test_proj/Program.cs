@@ -95,7 +95,6 @@ namespace test_proj
             {
                 st.DisplayText(); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
             }
-
         }
 
         static void AdvancedMenu()
