@@ -290,7 +290,7 @@ namespace SelectableText_lib_namespace
         public void WriteSelectedText(BetterText text)
         {
             List<char> splitText = text.GetText().ToList();
-            if (string.Join("", splitText).Contains("["))
+            if (string.Join("", splitText).Contains('['))
             {
                 foreach (char c in splitText)
                 {
@@ -311,7 +311,7 @@ namespace SelectableText_lib_namespace
         public void WriteSelectedText(BetterText text, int selectionIndex)
         {
             List<char> splitText = text.GetText().ToList();
-            if (string.Join("", splitText).Contains("[") && text.selectionIndex != null && text.selectionIndex.ContainsKey(selectionIndex))
+            if (string.Join("", splitText).Contains('[') && text.selectionIndex != null && text.selectionIndex.ContainsKey(selectionIndex))
             {
                 for (int i = 0; i < splitText.Count; i++)
                 {
@@ -341,7 +341,7 @@ namespace SelectableText_lib_namespace
         public void WriteSelectedText(string text)
         {
             List<char> splitText = text.ToList();
-            if (string.Join("", splitText).Contains("["))
+            if (string.Join("", splitText).Contains('['))
             {
                 foreach (char c in splitText)
                 {
