@@ -9,7 +9,7 @@ namespace test_proj
     {
         static void Main(string[] args)
         {
-            int? choice = null;
+            int? choice = null; //This is a example how a menu would be made without this library, this is just to show how much easier it is to make a menu with the library as you can see in the other functions
             while (choice == null)
             {
                 Console.Clear();
