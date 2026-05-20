@@ -21,6 +21,7 @@ using SelectableText_lib_namespace;
 
 static void KeyWordMenu()
 {
+    var loop = true;
     // Initialize the menu with optional animation and color customization
     SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White);
 
@@ -35,9 +36,9 @@ static void KeyWordMenu()
     st.SetShownText(menu);
 
     // Display the menu and handle user interaction
-    while (true)
+    while (loop)
     {
-        st.DisplayText(); // Handles user input and selection
+        st.DisplayText(loop); // Handles user input and selection
     }
 }
 
