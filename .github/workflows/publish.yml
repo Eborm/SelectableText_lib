@@ -23,7 +23,10 @@ jobs:
 
       - name: Pack
         run: |
-          dotnet pack SelectableText_lib/SelectableText_lib_namespace.csproj --configuration Release --no-build --output ./nupkgs -p:PackageVersion=${{ github.ref_name }}
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          VERSION="${VERSION#V}"
+          dotnet pack SelectableText_lib/SelectableText_lib_namespace.csproj --configuration Release --no-build --output ./nupkgs -p:PackageVersion=$VERSION
 
       - name: Publish to NuGet
         run: |
