@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -11,6 +12,7 @@ namespace SelectableText_lib_namespace.Classes
     public class BetterText
     {
         private string text { get; set; }
+        private string? altText { get; set; }
         private List<Action>? functions { get; set; }
         public bool isExecutable = false;
         public bool hasMultipleFunctions = false;
@@ -47,6 +49,93 @@ namespace SelectableText_lib_namespace.Classes
             isExecutable = true;
             hasMultipleFunctions = true;
 
+            //Initialize the selection index for each function
+            selectionIndex = CalculateSelectionIndexes(_text);
+        }
+
+        //Better text that is updateable with single function implementation
+        public BetterText(string _text, string _alttext, Action _function)
+        {
+            //See if the alternative text has the same amount of selectable parts as the original text, if not throw an exception as this would cause problems when trying to update the text
+            if (CalculateSelectionIndexes(_text).Count != CalculateSelectionIndexes(_alttext).Count)
+            {
+                throw new ArgumentException("Both text and alttext must have the same number of selection indices.");
+            }   
+
+            text = _text;
+            altText = _alttext;
+            Action function = () =>
+            {
+                var temp = text;
+                UpdateText(altText);
+                altText = temp;
+                _function.Invoke();
+            };
+            functions = new List<Action> { function };
+            isExecutable = true;
+            //Initialize the selection index for each function
+            selectionIndex = CalculateSelectionIndexes(_text);
+        }
+
+        //Better text that is updateable with multiple functions implementation where any trigger updates the text
+        public BetterText(string _text, string _alttext, List<Action> _functions)
+        {
+            //See if the alternative text has the same amount of selectable parts as the original text, if not throw an exception as this would cause problems when trying to update the text
+            if (CalculateSelectionIndexes(_text).Count != CalculateSelectionIndexes(_alttext).Count)
+            {
+                throw new ArgumentException("Both text and alttext must have the same number of selection indices.");
+            }
+            text = _text;
+            altText = _alttext;
+            List<Action> functionsWithUpdate = new List<Action>();
+            for (int i = 0; i < _functions.Count; i++)
+            {
+                int index = i; // Capture the current value of i for use in the lambda expression
+                Action function = () =>
+                {
+                    var temp = text;
+                    UpdateText(altText);
+                    altText = temp;
+                    _functions[index].Invoke();
+                };
+                functionsWithUpdate.Add(function);
+            }
+            functions = functionsWithUpdate;
+            isExecutable = true;
+            hasMultipleFunctions = true;
+            //Initialize the selection index for each function
+            selectionIndex = CalculateSelectionIndexes(_text);
+        }
+
+        //Better text that is updateable with multiple functions implementation where only the trigger updates the text
+        public BetterText(string _text, string _alttext, List<Action> _functions, int UpdateFunction)
+        {
+            //See if the alternative text has the same amount of selectable parts as the original text, if not throw an exception as this would cause problems when trying to update the text
+            if (CalculateSelectionIndexes(_text).Count != CalculateSelectionIndexes(_alttext).Count)
+            {
+                throw new ArgumentException("Both text and alttext must have the same number of selection indices.");
+            }
+            text = _text;
+            altText = _alttext;
+            List<Action> functionsWithUpdate = new List<Action>();
+            for (int i = 0; i < _functions.Count; i++)
+            {
+                int index = i; // Capture the current value of i for use in the lambda expression
+                Action function = () =>
+                {
+                    if (index == UpdateFunction)
+                    {
+                        var temp = text;
+                        UpdateText(altText);
+                        altText = temp;
+                    }
+                    _functions[index].Invoke();
+                };
+                functionsWithUpdate.Add(function);
+            }
+            functions = functionsWithUpdate;
+            isExecutable = true;
+            hasMultipleFunctions = true;
             //Initialize the selection index for each function
             selectionIndex = CalculateSelectionIndexes(_text);
         }
@@ -113,12 +202,6 @@ namespace SelectableText_lib_namespace.Classes
             }
             else if (!hasMultipleFunctions)
             {
-                int newSelectionCount = newText.Count(c => c == '[');
-                if (newSelectionCount != 0)
-                {
-                    throw new InvalidOperationException("New text cannot contain selection indices for a BetterText instance that does not have multiple functions.");
-                }
-
                 text = newText;
             }
             else
