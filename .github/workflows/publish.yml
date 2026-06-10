@@ -1,5 +1,4 @@
 name: Publish NuGet Package
-
 on:
   release:
     types: [published]
@@ -7,7 +6,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -20,10 +18,19 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build SelectableText_lib/SelectableText_lib_namespace.csproj --configuration Release --no-restore
+        run: dotnet build SelectableText_lib/SelectableText_lib_namespace.csproj \
+          --configuration Release \
+          --no-restore
 
       - name: Pack
-        run: dotnet pack SelectableText_lib/SelectableText_lib_namespace.csproj --configuration Release --no-build --output ./nupkgs
+        run: dotnet pack SelectableText_lib/SelectableText_lib_namespace.csproj \
+          --configuration Release \
+          --no-build \
+          --output ./nupkgs \
+          -p:PackageVersion=${{ github.ref_name }}
 
       - name: Publish to NuGet
-        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./nupkgs/*.nupkg \
+          --api-key ${{ secrets.NUGET_API_KEY }} \
+          --source https://api.nuget.org/v3/index.json \
+          --skip-duplicate
