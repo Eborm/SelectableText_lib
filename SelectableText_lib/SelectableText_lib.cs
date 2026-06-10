@@ -149,6 +149,51 @@ namespace SelectableText_lib_namespace
             textKeyDictonary.Add(keyword, textCount);
         }
 
+        //Add in a text to the textDictionary this text has a function attached to it, and is selectable, and has a alternitive text that updates on execution, this is used for text that should be displayed and interacted with, when the text is selected the function will be executed and the text will update to the alternitive text, this is useful for things like toggles, where the text should change when it is selected
+        public void AddText(string text, Action function, string altText)
+        {
+            textCount++;
+            textDictonary.Add(textCount, new BetterText(text, altText, function));
+        }
+
+        //Add in a text to the textDictionary this text has multiple functions attached to it, and is selectable, and has a alternitive text that updates on any execution, this is used for text that should be displayed and interacted with, when the text is selected the function that corrosponds to the selection index will be executed and the text will update to the alternitive text, this is useful for things like toggles, where the text should change when it is selected
+       public void AddText(string text, List<Action> functions, string altText)
+        {
+            textCount++;
+            textDictonary.Add(textCount, new BetterText(text, altText, functions));
+        }
+
+        //Add in a text to the textDictionary this text has a function attached to it, and is selectable, and has a alternitive text that updates on a specific function execution, this is used for text that should be displayed and interacted with, when the text is selected the function will be executed and the text will update to the alternitive text, this is useful for things like toggles, where the text should change when it is selected
+        public void AddText(string text, List<Action> function, string altText, int altTextFunctionIndex)
+        {
+            textCount++;
+            textDictonary.Add(textCount, new BetterText(text, altText, function, altTextFunctionIndex));
+        }
+
+        //Add in a text to the textDictionary this text has a function attached to it, and is selectable, and has a alternitive text that updates on a specific function execution, this is used for text that should be displayed and interacted with, when the text is selected the function will be executed and the text will update to the alternitive text, this is useful for things like toggles, where the text should change when it is selected, the keyword is used to add the text to the textKeyDictonary so it can be accessed by the keyword instead of the key in the textDictonary
+        public void AddText(string text, string keyword, Action function, string altText)
+        {
+            textCount++;
+            textDictonary.Add(textCount, new BetterText(text, altText, function));
+            textKeyDictonary.Add(keyword, textCount);
+        }
+
+        //Add in a text to the textDictionary this text has multiple functions attached to it, and is selectable, and has a alternitive text that updates on any execution, this is used for text that should be displayed and interacted with, when the text is selected the function that corrosponds to the selection index will be executed and the text will update to the alternitive text, this is useful for things like toggles, where the text should change when it is selected, the keyword is used to add the text to the textKeyDictonary so it can be accessed by the keyword instead of the key in the textDictonary
+        public void AddText(string text, string keyword, List<Action> functions, string altText)
+        {
+            textCount++;
+            textDictonary.Add(textCount, new BetterText(text, altText, functions));
+            textKeyDictonary.Add(keyword, textCount);
+        }
+
+        //Add in a text to the textDictionary this text has a function attached to it, and is selectable, and has a alternitive text that updates on a specific function execution, this is used for text that should be displayed and interacted with, when the text is selected the function will be executed and the text will update to the alternitive text, this is useful for things like toggles, where the text should change when it is selected, the keyword is used to add the text to the textKeyDictonary so it can be accessed by the keyword instead of the key in the textDictonary
+        public void AddText(string text, string keyword, List<Action> functions, string altText, int altTextFunctionIndex)
+        {
+            textCount++;
+            textDictonary.Add(textCount, new BetterText(text, altText, functions, altTextFunctionIndex));
+            textKeyDictonary.Add(keyword, textCount);
+        }
+
         //Add in a text to the textDictonary this text is added as a BetterText object, this is used when the user wants to create a BetterText object first and then add it to the textDictonary, this allows the user to use the functions of the BetterText class to modify the text before adding it to the textDictonary
         public void AddText(BetterText text)
         {
