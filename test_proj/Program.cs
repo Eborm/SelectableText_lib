@@ -2,6 +2,7 @@
 using static System.Net.Mime.MediaTypeNames;
 using SelectableText_lib_namespace.Classes;
 using System.Security.Principal;
+using System.Runtime.InteropServices;
 
 namespace showcase_proj
 {
@@ -16,8 +17,9 @@ namespace showcase_proj
                 Console.WriteLine("1. Simple menu");
                 Console.WriteLine("2. Keyword menu");
                 Console.WriteLine("3. Advanced menu");
-                Console.WriteLine("4. Calendar example");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("4. Update menu");
+                Console.WriteLine("5. Calendar example");
+                Console.WriteLine("6. Exit");
                 string? input = Console.ReadLine();
                 if (input == "1")
                 {
@@ -39,6 +41,10 @@ namespace showcase_proj
                 {
                     choice = 5;
                 }
+                else if (input == "6")
+                {
+                    choice = 6;
+                }
             }
             switch (choice)
             {
@@ -52,9 +58,12 @@ namespace showcase_proj
                     AdvancedMenu();
                     break;
                 case 4:
-                    CallenderExample();
+                    UpdateMenu();
                     break;
                 case 5:
+                    CallenderExample();
+                    break;
+                case 6:
                     Environment.Exit(0);
                     break;
                 default:
@@ -110,6 +119,23 @@ namespace showcase_proj
             st.AddText("some text2"); //This is just text that will be displayed but not selectable as it has no function tied to it
             List<int> menu = new List<int> { 1, 0, 2, 3, 4 };
             st.SetShownText(menu);  //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
+            //0 simply displays a nothing as this is a empty string preadded into the dictionary
+            while (loop) //Use loop variable to keep the menu running when the user presses escape it will be detected and the while loop will stop
+            {
+                st.DisplayText(ref loop); //creates the menu and handles all the input and output for you, it will call the functions you have tied to the text when the user selects them and presses enter
+            }
+        }
+
+        static void UpdateMenu() //If you want to use keyword it would be the same as the keyword menu just add a second text after the first one and keep the rest the same
+        {
+            var loop = true; //Setup look variable that allows us to exit the menu when we want
+            SelectableText_lib st = new SelectableText_lib(true, ConsoleColor.Black, ConsoleColor.White); //First variable is used to chose if you want the intro animation
+            //Second variable is the background color of the text when it is not selected, third variable is the text color of the text
+            st.AddText("[O] Not Selected", MyFunction, "[X] Selected"); //Bracketed text is the text that will be highlighted when the user has that row selected, third parameter is the text that will be displayed when the user has that row selected instead of the normal text
+            st.AddText("[O] Not Selected [O]", new List<Action> {MyFunction, MyFunction2}, "[X] Selected [X]");//Bracketed text is the text that will be highlighted when the user has that row selected, third parameter is the text that will be displayed when the user has that row selected instead of the normal text, this example also shows how you can have multiple functions tied to one text and it will call the functions in order of how they are in the list when the user presses enter
+            st.AddText("[0] Not Selected [Run function]", new List<Action> { MyFunction, MyFunction2}, "[X] Selected [run]", 0); //Bracketed text is the text that will be highlighted when the user has that row selected, third parameter is the text that will be displayed when the user has that row selected instead of the normal text, this example also shows how you can have multiple functions tied to one text and it will call the functions in order of how they are in the list when the user presses enter, this also shows how you can have different text for when the item is selected and not selected
+            List<int> menu = new List<int> { 1, 0, 2, 0, 3 };
+            st.SetShownText(menu); //list of items that you want displayed in the menu, the order they are in is the order they will be displayed in, you can repeat items as many times as you want,
             //0 simply displays a nothing as this is a empty string preadded into the dictionary
             while (loop) //Use loop variable to keep the menu running when the user presses escape it will be detected and the while loop will stop
             {
