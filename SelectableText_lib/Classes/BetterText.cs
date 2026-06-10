@@ -181,24 +181,15 @@ namespace SelectableText_lib_namespace.Classes
 
         public void UpdateText(string newText)
         {
+            //Validation for the text indicies is valadated upon creation of the object and does not need to be handeld by the function itself
             if (newText == null)
             {
                 throw new ArgumentNullException(nameof(newText), "New text cannot be null.");
             }
             if (hasMultipleFunctions)
             {
-                // Validate that the new text has the same number of selection indices as the original text
-                int originalSelectionCount = selectionIndex != null ? selectionIndex.Count : 0;
-                int newSelectionCount = newText.Count(c => c == '[');
-                if (originalSelectionCount != newSelectionCount)
-                {
-                    throw new InvalidOperationException("New text must have the same number of selection indices as the original text.");
-                }
-                else
-                {
-                    selectionIndex = CalculateSelectionIndexes(newText);
-                    text = newText;
-                }
+                selectionIndex = CalculateSelectionIndexes(newText);
+                text = newText;
             }
             else if (!hasMultipleFunctions)
             {
